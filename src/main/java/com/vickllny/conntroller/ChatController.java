@@ -13,7 +13,7 @@ public class ChatController {
     @Autowired
     private ConsultantService consultantService;
 
-    @GetMapping(value = "/chat", produces = MediaType.TEXT_HTML_VALUE)
+    @GetMapping(value = "/chat", produces = MediaType.TEXT_HTML_VALUE + ";charset=utf-8")
     public Flux<String> chat(String message){
         return consultantService.chat(message);
     }
