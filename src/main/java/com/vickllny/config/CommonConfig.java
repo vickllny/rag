@@ -1,23 +1,27 @@
 package com.vickllny.config;
 
-import com.vickllny.service.ConsultantService;
-import dev.langchain4j.model.openai.OpenAiChatModel;
-import dev.langchain4j.service.AiServices;
-import org.springframework.beans.factory.annotation.Autowired;
+import dev.langchain4j.memory.ChatMemory;
+import dev.langchain4j.memory.chat.ChatMemoryProvider;
+import dev.langchain4j.memory.chat.MessageWindowChatMemory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-//@Configuration
+@Configuration
 public class CommonConfig {
 
-    @Autowired
-    private OpenAiChatModel chatModel;
+    @Bean
+    public RedisChatMemoryStore redisChatMemoryStore(){
+        return new RedisChatMemoryStore();
+    }
 
     @Bean
-    public ConsultantService consultantService(){
-        return AiServices.builder(ConsultantService.class)
-                .chatModel(chatModel)
+    public ChatMemoryProvider chatMemoryProvider(){
+        return id -> MessageWindowChatMemory.builder()
+                .chatMemoryStore(redisChatMemoryStore())
+                .id(id)
+                .maxMessages(20)
                 .build();
-
     }
+
+
 }

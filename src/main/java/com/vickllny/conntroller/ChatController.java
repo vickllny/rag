@@ -4,6 +4,7 @@ import com.vickllny.service.ConsultantService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Flux;
 
@@ -14,8 +15,8 @@ public class ChatController {
     private ConsultantService consultantService;
 
     @GetMapping(value = "/chat", produces = MediaType.TEXT_HTML_VALUE + ";charset=utf-8")
-    public Flux<String> chat(String message){
-        return consultantService.chat(message);
+    public Flux<String> chat(@RequestParam(value = "memoryId") String memoryId, @RequestParam(value = "message") String message){
+        return consultantService.chat(memoryId, message);
     }
 
 
